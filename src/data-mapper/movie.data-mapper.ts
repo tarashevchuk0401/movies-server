@@ -3,7 +3,7 @@ import { MovieEntity } from '../entities/movie.entity';
 import { MovieItem } from '../interfaces/movie';
 
 @Injectable()
-export class MovieDataMaper {
+export class MovieDataMapper {
   entityToItem(entity: MovieEntity): MovieItem {
     const { id, title, description, year, category, rating, actors } = entity;
 
