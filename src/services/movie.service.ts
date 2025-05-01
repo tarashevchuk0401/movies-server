@@ -39,8 +39,6 @@ export class MovieService {
 
   async getList(params: GetMovieListDto): Promise<ListResponse<MovieItem>> {
     const { page, pageSize, sortColumn, sortDirection } = params;
-    console.log(page)
-    console.log(pageSize)
 
     const [data, total] = await this.movieRepository.findAndCount({
       order: {
