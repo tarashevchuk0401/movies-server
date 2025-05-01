@@ -10,12 +10,12 @@ import { MovieDataMapper } from "./data-mapper/movie.data-mapper";
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'oracle',
-      host: 'localhost',
-      port: 1521,
-      serviceName: 'orclpdb1',
-      username: 'movies1',
-      password: 'movies1',
+      type: 'postgres',
+      host: 'db',
+      port: 5432,
+      username: 'postgres',
+      password: 'postgres',
+      database: 'postgres',
       autoLoadEntities: true,
       synchronize: true,
       logging: false,
