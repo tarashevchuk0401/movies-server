@@ -12,7 +12,9 @@ import { MovieService } from '../services/movie.service';
 import { CreateMovieDto } from '../dto/movies/create-movie.dto';
 import { GetMovieListDto } from '../dto/movies/get-movie-list.dto';
 import { AuthGuard } from '../gaurd/auth.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('movie')
 @Controller('movie')
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
@@ -37,7 +39,7 @@ export class MovieController {
     return this.movieService.createItem(data);
   }
 
-  @UseGuards(AuthGuard)
+  @ApiBearerAuth('access-token')
   @Get('check-title/:title')
   async checkTitle(@Param('title') title: string): Promise<boolean> {
     return await this.movieService.checkTitle(title);

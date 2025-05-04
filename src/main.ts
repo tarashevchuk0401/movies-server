@@ -10,11 +10,27 @@ async function bootstrap() {
     credentials: true,
   });
 
+  // const config = new DocumentBuilder()
+  //   .setTitle('Movies app')
+  //   .setVersion('1.0')
+  //   .addTag('movies')
+  //   .build();
   const config = new DocumentBuilder()
     .setTitle('Movies app')
     .setVersion('1.0')
     .addTag('movies')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        in: 'header',
+      },
+      'access-token',
+    )
+    .addSecurityRequirements('access-token')
     .build();
+
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
   await app.listen(3000);
