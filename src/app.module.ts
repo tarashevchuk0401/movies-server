@@ -5,7 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MovieController } from './controlers/movie.controller';
 import { MovieService } from './services/movie.service';
 import { MovieEntity } from './entities/movie.entity';
-import { MovieDataMapper } from "./data-mapper/movie.data-mapper";
+import { MovieDataMapper } from './data-mapper/movie.data-mapper';
+import { ChatGateway } from './chat/chat.gateway';
 
 @Module({
   imports: [
@@ -24,6 +25,6 @@ import { MovieDataMapper } from "./data-mapper/movie.data-mapper";
     TypeOrmModule.forFeature([MovieEntity]),
   ],
   controllers: [AppController, MovieController],
-  providers: [AppService, MovieService, MovieDataMapper],
+  providers: [AppService, MovieService, MovieDataMapper, ChatGateway],
 })
 export class AppModule {}
