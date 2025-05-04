@@ -2,12 +2,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MovieEntity } from '../entities/movie.entity';
 import { Repository } from 'typeorm';
-import { CreateMovieDto } from '../dto/create-movie.dto';
-import { GetMovieListDto } from '../dto/get-movie-list.dto';
+import { CreateMovieDto } from '../dto/movies/create-movie.dto';
+import { GetMovieListDto } from '../dto/movies/get-movie-list.dto';
 import {
   MovieDataMapper,
 } from '../data-mapper/movie.data-mapper';
-import { ListResponse } from '../interfaces/list-response';
+import { ListResponse } from '../interfaces/common/list-response';
 import { MovieItem } from '../interfaces/movie';
 
 @Injectable()

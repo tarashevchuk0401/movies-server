@@ -1,7 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Post, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { MovieService } from '../services/movie.service';
-import { CreateMovieDto } from '../dto/create-movie.dto';
-import { GetMovieListDto } from '../dto/get-movie-list.dto';
+import { CreateMovieDto } from '../dto/movies/create-movie.dto';
+import { GetMovieListDto } from '../dto/movies/get-movie-list.dto';
+import { AuthGuard } from '../gaurd/auth.guard';
 
 @Controller('movie')
 export class MovieController {
@@ -27,6 +37,7 @@ export class MovieController {
     return this.movieService.createItem(data);
   }
 
+  @UseGuards(AuthGuard)
   @Get('check-title/:title')
   async checkTitle(@Param('title') title: string): Promise<boolean> {
     return await this.movieService.checkTitle(title);
