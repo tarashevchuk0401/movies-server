@@ -6,12 +6,10 @@ import {
   Param,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { MovieService } from '../services/movie.service';
 import { CreateMovieDto } from '../dto/movies/create-movie.dto';
 import { GetMovieListDto } from '../dto/movies/get-movie-list.dto';
-import { AuthGuard } from '../gaurd/auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('movie')

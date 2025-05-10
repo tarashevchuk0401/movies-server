@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -12,6 +13,7 @@ import { SuccessResponse } from '../interfaces/common/success.responsse';
 import { LogInRequestDto } from '../dto/user/requests/log-in-request.dto';
 import { LoginResponse } from '../dto/user/responses/log-in-response.dto';
 import { JwtService } from '@nestjs/jwt';
+import { GetMeResponse } from '../dto/user/responses/get-me-response.dto';
 
 @Injectable()
 export class UserService {
@@ -23,6 +25,8 @@ export class UserService {
   ) {}
 
   async signUp(data: SignUpRequestDto): Promise<SuccessResponse> {
+    await this.checkMailAvailability(data.email);
+
     await this.userRepository.save(
       this.userRepository.create({
         ...data,
@@ -31,7 +35,7 @@ export class UserService {
     return { isSuccess: true };
   }
 
-  async logIn(data: LogInRequestDto): Promise<LoginResponse> {
+  async signIn(data: LogInRequestDto): Promise<LoginResponse> {
     const { email, password } = data;
     const user = await this.userRepository.findOne({ where: { email } });
     console.log('user', user);
@@ -43,7 +47,7 @@ export class UserService {
       throw new UnauthorizedException();
     }
     const payload = {
-      sub: user.id,
+      id: user.id,
       firstName: user.firstName,
       lastName: user.lastName,
     };
@@ -51,5 +55,16 @@ export class UserService {
       token: await this.jwtService.signAsync(payload),
       refreshToken: await this.jwtService.signAsync(payload),
     };
+  }
+
+  async getMe(id: number): Promise<GetMeResponse> {
+    const user = await this.userRepository.findOneBy({ id });
+
+    return this.userDataMapper.entityToItem(user);
+  }
+
+  private async checkMailAvailability(email: string): Promise<void> {
+    const mailExist = await this.userRepository.findOneBy({ email });
+    if (mailExist) throw new BadRequestException('Email already exists');
   }
 }

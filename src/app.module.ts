@@ -13,9 +13,9 @@ import { UserDataMapper } from './data-mapper/user.data-mapper';
 import { UserService } from './services/user.service';
 import { JwtModule } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
+dotenv.config();
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './gaurd/auth.guard';
-dotenv.config();
 
 @Module({
   imports: [
