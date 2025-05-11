@@ -12,8 +12,11 @@ export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
   @Post('create')
-  async create(@Body() data: CreateChatRequest): Promise<SuccessResponse> {
-    return await this.chatService.createChat(data);
+  async create(
+    @Body() data: CreateChatRequest,
+    @Request() req: any,
+  ): Promise<SuccessResponse> {
+    return await this.chatService.createChat(data, req.user.id);
   }
 
   @Get('list')
