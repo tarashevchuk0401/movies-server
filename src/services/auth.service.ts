@@ -5,18 +5,19 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Not, Repository } from 'typeorm';
 import { UserEntity } from '../entities/user.entiity';
 import { UserDataMapper } from '../data-mapper/user.data-mapper';
 import { SignUpRequestDto } from '../dto/user/requests/sign-up-request.dto';
-import { SuccessResponse } from '../interfaces/common/success.responsse';
+import { SuccessResponse } from '../core/interfaces/common/success.responsse';
 import { LogInRequestDto } from '../dto/user/requests/log-in-request.dto';
 import { LoginResponse } from '../dto/user/responses/log-in-response.dto';
 import { JwtService } from '@nestjs/jwt';
 import { GetMeResponse } from '../dto/user/responses/get-me-response.dto';
+import { GetParticipantsDto } from '../dto/chat/responses/get-particiipant.response.dto';
 
 @Injectable()
-export class UserService {
+export class AuthService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
@@ -32,13 +33,13 @@ export class UserService {
         ...data,
       }),
     );
+
     return { isSuccess: true };
   }
 
   async signIn(data: LogInRequestDto): Promise<LoginResponse> {
     const { email, password } = data;
     const user = await this.userRepository.findOne({ where: { email } });
-    console.log('user', user);
 
     if (!user) {
       throw new NotFoundException('User not found');
@@ -57,10 +58,23 @@ export class UserService {
     };
   }
 
-  async getMe(id: number): Promise<GetMeResponse> {
+  async getMe(id: string): Promise<GetMeResponse> {
     const user = await this.userRepository.findOneBy({ id });
 
     return this.userDataMapper.entityToItem(user);
+  }
+
+  async getUsers(usersId: string[]): Promise<UserEntity[]> {
+    return await this.userRepository.find({ where: { id: In(usersId) } });
+  }
+
+  async getParticipants(userId: string): Promise<GetParticipantsDto[]> {
+    const users = await this.userRepository.find({
+      where: { id: Not(userId) },
+      select: ['firstName', 'lastName', 'id', 'email'],
+    });
+
+    return users.map((user) => this.userDataMapper.entityToListItem(user));
   }
 
   private async checkMailAvailability(email: string): Promise<void> {

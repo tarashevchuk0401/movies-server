@@ -1,10 +1,10 @@
+import { IsString } from 'class-validator';
 import { ApiProperty, ApiSchema } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
 
-@ApiSchema({ name: 'me' })
-export class GetMeResponse {
+@ApiSchema({ name: 'Participants' })
+export class GetParticipantsDto {
   @ApiProperty()
-  @IsNumber()
+  @IsString()
   id: string;
 
   @ApiProperty()

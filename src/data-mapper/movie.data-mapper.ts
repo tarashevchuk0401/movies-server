@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MovieEntity } from '../entities/movie.entity';
-import { MovieItem } from '../interfaces/movie';
+import { MovieItem } from '../core/interfaces/movie';
 
 @Injectable()
 export class MovieDataMapper {

@@ -1,9 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { ChatEntity } from './chat.entity';
 
 @Entity()
 export class UserEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   firstName: string;
@@ -16,4 +17,7 @@ export class UserEntity {
 
   @Column()
   password: string;
+
+  @ManyToMany(() => ChatEntity, (chat) => chat.participants)
+  chats: ChatEntity[];
 }

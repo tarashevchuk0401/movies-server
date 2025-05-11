@@ -4,11 +4,9 @@ import { MovieEntity } from '../entities/movie.entity';
 import { Repository } from 'typeorm';
 import { CreateMovieDto } from '../dto/movies/create-movie.dto';
 import { GetMovieListDto } from '../dto/movies/get-movie-list.dto';
-import {
-  MovieDataMapper,
-} from '../data-mapper/movie.data-mapper';
-import { ListResponse } from '../interfaces/common/list-response';
-import { MovieItem } from '../interfaces/movie';
+import { MovieDataMapper } from '../data-mapper/movie.data-mapper';
+import { ListResponse } from '../core/interfaces/common/list-response';
+import { MovieItem } from '../core/interfaces/movie';
 
 @Injectable()
 export class MovieService {
@@ -55,7 +53,7 @@ export class MovieService {
 
   async getById(id: string) {
     const movie = await this.movieRepository.findOne({
-      where: { id: Number(id) },
+      where: { id },
     });
     if (!movie) {
       throw new NotFoundException();

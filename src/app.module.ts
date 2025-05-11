@@ -8,14 +8,19 @@ import { MovieEntity } from './entities/movie.entity';
 import { MovieDataMapper } from './data-mapper/movie.data-mapper';
 import { ChatGateway } from './chat/chat.gateway';
 import { UserEntity } from './entities/user.entiity';
-import { UserController } from './controlers/user.controller';
+import { AuthController } from './controlers/authController';
 import { UserDataMapper } from './data-mapper/user.data-mapper';
-import { UserService } from './services/user.service';
+import { AuthService } from './services/auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
 dotenv.config();
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './gaurd/auth.guard';
+import { AuthGuard } from './core/gaurd/auth.guard';
+import { ChatEntity } from './entities/chat.entity';
+import { MessageEntity } from './entities/message.entity';
+import { MessageService } from './services/message.service';
+import { ChatService } from './services/chat.service';
+import { ChatController } from './controlers/chat.controller';
 
 @Module({
   imports: [
@@ -31,21 +36,29 @@ import { AuthGuard } from './gaurd/auth.guard';
       logging: false,
       entities: [MovieEntity],
     }),
-    TypeOrmModule.forFeature([MovieEntity, UserEntity]),
+    TypeOrmModule.forFeature([
+      MovieEntity,
+      UserEntity,
+      MessageEntity,
+      ChatEntity,
+    ]),
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '3600s' },
     }),
   ],
-  controllers: [AppController, MovieController, UserController],
+  controllers: [AppController, MovieController, AuthController, ChatController],
   providers: [
     AppService,
     MovieService,
     MovieDataMapper,
     ChatGateway,
-    UserService,
+    AuthService,
     UserDataMapper,
+    MessageService,
+    ChatService,
+
     {
       provide: APP_GUARD,
       useClass: AuthGuard,

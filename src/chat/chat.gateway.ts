@@ -3,18 +3,36 @@ import {
   SubscribeMessage,
   MessageBody,
   WebSocketServer,
+  ConnectedSocket,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
+import { Socket } from 'socket.io';
+import { MessageService } from '../services/message.service';
 
-@WebSocketGateway({ cors: true }) // Enable CORS for frontend access
+@WebSocketGateway({ cors: false })
 export class ChatGateway {
   @WebSocketServer()
   server: Server;
 
-  @SubscribeMessage('message')
-  handleMessage(@MessageBody() data: { sender: string; message: string }) {
-    console.log(data);
-    console.log('handleMessage');
-    this.server.emit('message', `response from server ${new Date()}`); // Broadcast message to all clients
+  constructor(private messageService: MessageService) {}
+
+  @SubscribeMessage('join')
+  handleJoinRoom(
+    @MessageBody() roomId: string,
+    @ConnectedSocket() client: Socket,
+  ) {
+    client.join(roomId);
+  }
+
+  @SubscribeMessage('private-message')
+  async handlePrivateMessage(
+    @MessageBody() data: { roomId: string; text: string; sender: string },
+  ) {
+    await this.messageService.saveMessage(data.roomId, data.sender, data.text);
+
+    this.server.to(data.roomId).emit('message', {
+      sender: data.sender,
+      text: data.text,
+    });
   }
 }

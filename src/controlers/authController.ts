@@ -1,16 +1,16 @@
 import { Body, Controller, Get, Post, Request } from '@nestjs/common';
 import { SignUpRequestDto } from '../dto/user/requests/sign-up-request.dto';
-import { UserService } from '../services/user.service';
-import { SuccessResponse } from '../interfaces/common/success.responsse';
+import { AuthService } from '../services/auth.service';
+import { SuccessResponse } from '../core/interfaces/common/success.responsse';
 import { LoginResponse } from '../dto/user/responses/log-in-response.dto';
 import { LogInRequestDto } from '../dto/user/requests/log-in-request.dto';
-import { Public } from '../decorators/public-route.decorator';
+import { Public } from '../core/decorators/public-route.decorator';
 import { GetMeResponse } from '../dto/user/responses/get-me-response.dto';
 import { ApiOkResponse } from '@nestjs/swagger';
 
 @Controller('auth')
-export class UserController {
-  constructor(private readonly userService: UserService) {}
+export class AuthController {
+  constructor(private readonly userService: AuthService) {}
 
   @Public()
   @Post('sign-up')
