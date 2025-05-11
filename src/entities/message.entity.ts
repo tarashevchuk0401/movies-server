@@ -16,7 +16,7 @@ export class MessageEntity {
   @Column()
   text: string;
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UserEntity, { eager: true })
   sender: UserEntity;
 
   @ManyToOne(() => ChatEntity, (chat) => chat.messages)

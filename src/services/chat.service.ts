@@ -57,6 +57,8 @@ export class ChatService {
       where: { id },
       relations: ['messages'],
     });
+
+
   }
 
   async getParticipants(userId: string): Promise<GetParticipantsDto[]> {
