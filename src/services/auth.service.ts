@@ -68,6 +68,10 @@ export class AuthService {
     return await this.userRepository.find({ where: { id: In(usersId) } });
   }
 
+  async getUser(usersId: string): Promise<UserEntity> {
+    return await this.userRepository.findOneBy({ id: usersId });
+  }
+
   async getParticipants(userId: string): Promise<GetParticipantsDto[]> {
     const users = await this.userRepository.find({
       where: { id: Not(userId) },

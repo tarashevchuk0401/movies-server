@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Request } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Post, Request } from '@nestjs/common';
 import { SignUpRequestDto } from '../dto/user/requests/sign-up-request.dto';
 import { AuthService } from '../services/auth.service';
 import { SuccessResponse } from '../core/interfaces/common/success.responsse';
@@ -28,5 +28,10 @@ export class AuthController {
   @ApiOkResponse({ type: GetMeResponse })
   async getMe(@Request() req: any): Promise<GetMeResponse> {
     return this.userService.getMe(req.user.id);
+  }
+
+  @Get('all-users')
+  async getUsers(): Promise<any> {
+    return new NotFoundException('NO DATA ');
   }
 }

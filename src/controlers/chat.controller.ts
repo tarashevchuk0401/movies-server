@@ -3,8 +3,8 @@ import { Body, Controller, Get, Param, Post, Request } from '@nestjs/common';
 import { ChatService } from '../services/chat.service';
 import { CreateChatRequest } from '../dto/chat/requests/create-chat-requests.dto';
 import { ChatEntity } from '../entities/chat.entity';
-import { SuccessResponse } from '../core/interfaces/common/success.responsse';
 import { GetParticipantsDto } from '../dto/chat/responses/get-particiipant.response.dto';
+import { CreateChatResponse } from '../dto/chat/responses/create-chat-response.to';
 
 @ApiTags('chat')
 @Controller('chat')
@@ -15,8 +15,8 @@ export class ChatController {
   async create(
     @Body() data: CreateChatRequest,
     @Request() req: any,
-  ): Promise<SuccessResponse> {
-    return await this.chatService.createChat(data, req.user.id);
+  ): Promise<CreateChatResponse> {
+    return await this.chatService.createChatOrGetExisted(data, req.user.id);
   }
 
   @Get('list')
