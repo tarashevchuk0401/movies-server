@@ -21,6 +21,10 @@ import { MessageEntity } from './entities/message.entity';
 import { MessageService } from './services/message.service';
 import { ChatService } from './services/chat.service';
 import { ChatController } from './controlers/chat.controller';
+import { AiService } from './services/ai.service';
+import { AiController } from './controlers/ai.controller';
+import { OpenAI } from 'openai';
+import * as process from 'node:process';
 
 @Module({
   imports: [
@@ -48,7 +52,13 @@ import { ChatController } from './controlers/chat.controller';
       signOptions: { expiresIn: '3600s' },
     }),
   ],
-  controllers: [AppController, MovieController, AuthController, ChatController],
+  controllers: [
+    AppController,
+    MovieController,
+    AuthController,
+    ChatController,
+    AiController,
+  ],
   providers: [
     AppService,
     MovieService,
@@ -58,10 +68,18 @@ import { ChatController } from './controlers/chat.controller';
     UserDataMapper,
     MessageService,
     ChatService,
-
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
+    },
+    AiService,
+    {
+      provide: OpenAI,
+      useFactory: () => {
+        return new OpenAI({
+          apiKey: process.env.OPEN_AI_API_KEY,
+        });
+      },
     },
   ],
 })
