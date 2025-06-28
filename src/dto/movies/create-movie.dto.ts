@@ -2,7 +2,6 @@ import {
   IsArray,
   IsNotEmpty,
   IsNumber,
-  IsOctal,
   IsOptional,
   IsString,
 } from 'class-validator';

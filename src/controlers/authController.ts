@@ -1,4 +1,11 @@
-import { Body, Controller, Get, NotFoundException, Post, Request } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Post,
+  Request,
+} from '@nestjs/common';
 import { SignUpRequestDto } from '../dto/user/requests/sign-up-request.dto';
 import { AuthService } from '../services/auth.service';
 import { SuccessResponse } from '../core/interfaces/common/success.responsse';
